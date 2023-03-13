@@ -1,0 +1,63 @@
+{
+  "name": "@opidor/dynamic-form",
+  "version": "1.0.0",
+  "description": "Dynamic Forms written with ReactJS for DMP OPIDoR. Uses JSON Schemas to generate forms dynamically.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c"
+  },
+  "keywords": [
+    "ReactJS",
+    "dynamic form",
+    "dmp",
+    "opidor",
+    "json schema",
+    "json"
+  ],
+  "homepage": "https://github.com/OPIDoR/dynamic-form",
+  "author": "Benjamin FAURE",
+  "contributors": [
+    {
+    "name":"Benjamin FAURE",
+    "email":"benjamin.faure@inist.fr",
+    "url":"https://github.com/benjaminfaure"
+    },
+    {
+    "name":"Amine Brahmi",
+    "email":"amine.brahmi@inist.fr",
+    "url":"https://github.com/mouhamedaminebrahmi"
+    }
+  ],
+  "license": "ISC",
+  "peerDependencies": {
+    "@tinymce/tinymce-react": "^4.3.0",
+    "axios": "^1.3.3",
+    "bootstrap": "^3.4.1",
+    "bootstrap-sass": "3.4.1",
+    "dompurify": "^3.0.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-bootstrap": "^0.33.1",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.0",
+    "react-loader-spinner": "^5.3.4",
+    "react-proptypes": "^1.0.0",
+    "react-select": "^5.7.0",
+    "sweetalert": "^2.1.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "@rollup/plugin-babel": "^5.2.2",
+    "autoprefixer": "^10.4.14",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-styles": "^4.0.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.21.0"
+  }
+}
