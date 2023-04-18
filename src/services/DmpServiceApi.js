@@ -10,18 +10,43 @@ function createHeaders(csrf = null) {
       },
     };
   }
-
-  return {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
 }
 
 export async function getFragment(id) {
   let response;
   try {
     response = await axios.get(`/madmp_fragments/${id}`, createHeaders());
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+  return response;
+}
+
+export async function loadForm(fragmentId) {
+  let response;
+  try {
+    response = await axios.get(`/madmp_fragments/load_form/${fragmentId}`, createHeaders());
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+  return response;
+}
+
+export async function loadNewForm(schemaId, obj, researchId, questionId, planId, token) {
+  let response;
+  const plan_id = planId;
+  const question_id = questionId;
+  const research_output_id = researchId;
+  const madmp_schema_id = schemaId;
+  const dmp_id = obj.plan.dmp_id;
+  try {
+    response = await axios.get(
+      `/madmp_fragments/load_new_form?madmp_fragment[answer][plan_id]=:${plan_id}&madmp_fragment[answer][question_id]=:${question_id}&madmp_fragment[answer][research_output_id]=:${research_output_id}&madmp_fragment[schema_id]=:${madmp_schema_id}&madmp_fragment[dmp_id]=:${dmp_id}`,
+      createHeaders()
+    );
+
   } catch (error) {
     console.error(error);
     return error;

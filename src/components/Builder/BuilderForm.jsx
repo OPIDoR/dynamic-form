@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { GlobalContext } from '../context/Global.jsx';
 import HandleGenerateForms from './HandleGenerateForms.jsx';
 
-function BuilderForm({ shemaObject, level }) {
+function BuilderForm({ shemaObject, level, fragmentId }) {
   const {
     formData, setFormData, subData, setSubData,
   } = useContext(GlobalContext);
@@ -14,11 +14,17 @@ function BuilderForm({ shemaObject, level }) {
    * event target.
    * @param event - the event that is triggered when the input is changed
    */
+  // const changeValue = (event) => {
+  //   const { name, value } = event.target;
+  //   level === 1 ? setform({ ...form, [name]: value }) : settemp({ ...temp, [name]: value });
+  // };
+
   const changeValue = (event) => {
     const { name, value } = event.target;
-    level === 1
-      ? setFormData({ ...formData, [name]: value })
-      : setSubData({ ...subData, [name]: value });
+    const updatedFormData = { ...formData };
+    updatedFormData[fragmentId] = updatedFormData[fragmentId] || {};
+    updatedFormData[fragmentId][name] = value;
+    level === 1 ? setFormData(updatedFormData) : setSubData({ ...subData, [name]: value });
   };
 
   /**
@@ -31,6 +37,7 @@ function BuilderForm({ shemaObject, level }) {
       shemaObject={shemaObject}
       level={level}
       changeValue={changeValue}
+      fragmentId={fragmentId}
     ></HandleGenerateForms>
   );
 }

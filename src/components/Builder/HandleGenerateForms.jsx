@@ -12,7 +12,7 @@ import TinyArea from '../Forms/TinyArea.jsx';
 import SelectInvestigator from '../Forms/SelectInvestigator.jsx';
 
 function HandleGenerateForms({
-  shemaObject, level, changeValue,
+  shemaObject, level, changeValue, fragmentId
 }) {
   const { locale, dmpId } = useContext(GlobalContext);
   if (!shemaObject) return false;
@@ -36,9 +36,10 @@ function HandleGenerateForms({
               level={level}
               key={key}
               label={label}
-              name={key}
+              propName={key}
               changeValue={changeValue}
               tooltip={tooltip}
+              fragmentId={fragmentId}
             ></TinyArea>,
           );
           // sethtmlGenerator(data);
@@ -58,7 +59,8 @@ function HandleGenerateForms({
               changeValue={changeValue}
               tooltip={tooltip}
               level={level}
-            ></SelectSingleList>,
+              fragmentId={fragmentId}
+            ></SelectSingleList>
           );
         }
         // Condition 1.3
@@ -73,12 +75,13 @@ function HandleGenerateForms({
               placeholder={''}
               isSmall={false}
               smallText={''}
-              name={key}
+              propName={key}
               changeValue={changeValue}
-              hidden={!!value.hidden}
+              hidden={value.hidden ? true : false}
               tooltip={tooltip}
               isConst={isConst}
-            ></InputText>,
+              fragmentId={fragmentId}
+            ></InputText>
           );
         }
       }
@@ -94,27 +97,28 @@ function HandleGenerateForms({
             data.push(
               <SelectWithCreate
                 label={label}
-                name={key}
+                propName={key}
                 key={key}
                 registryId={value.registry_id}
                 changeValue={changeValue}
                 templateId={value.items.schema_id}
                 level={level}
-                keyValue={key}
                 header={value[`table_header@${locale}`]}
+                fragmentId={fragmentId}
               ></SelectWithCreate>,
             );
           } else {
             data.push(
               <SelectMultipleList
                 label={label}
-                name={key}
+                propName={key}
                 key={key}
                 registryId={value.registry_id}
                 changeValue={changeValue}
                 tooltip={tooltip}
                 level={level}
-              ></SelectMultipleList>,
+                fragmentId={fragmentId}
+              ></SelectMultipleList>
             );
           }
         } else {
@@ -124,26 +128,27 @@ function HandleGenerateForms({
               data.push(
                 <SelectContributor
                   label={label}
-                  name={key}
+                  propName={key}
                   key={key}
                   changeValue={changeValue}
                   templateId={value.items.schema_id}
-                  keyValue={key}
                   level={level}
                   tooltip={tooltip}
                   header={value[`table_header@${locale}`]}
+                  fragmentId={fragmentId}
                 ></SelectContributor>,
               );
             } else {
               data.push(
                 <ModalTemplate
+                  propName={key}
                   key={key}
                   tooltip={tooltip}
                   value={value}
                   templateId={value.items.schema_id}
-                  keyValue={key}
                   level={level}
                   header={value[`table_header@${locale}`]}
+                  fragmentId={fragmentId}
                 ></ModalTemplate>,
               );
             }
@@ -153,8 +158,9 @@ function HandleGenerateForms({
               <InputTextDynamicaly
                 key={key}
                 label={label}
-                name={key}
+                propName={key}
                 tooltip={tooltip}
+                fragmentId={fragmentId}
               ></InputTextDynamicaly>,
             );
           }
@@ -169,14 +175,14 @@ function HandleGenerateForms({
           if (value.inputType === 'pickOrCreate') {
             data.push(
               <ModalTemplate
+                propName={key}
                 key={key}
                 tooltip={tooltip}
                 value={value}
                 templateId={value.schema_id}
-                keyValue={key}
                 level={level}
-                header={value[`table_header@${locale}`]}
-              ></ModalTemplate>,
+                fragmentId={fragmentId}
+              ></ModalTemplate>
             );
           }
 
@@ -185,15 +191,16 @@ function HandleGenerateForms({
             data.push(
               <SelectInvestigator
                 label={label}
-                name={key}
+                propName={key}
                 key={key}
+                arrayList={listContributor}
                 changeValue={changeValue}
                 dmpId={dmpId}
                 templateId={value.schema_id}
-                keyValue={key}
                 level={level}
                 tooltip={tooltip}
-              ></SelectInvestigator>,
+                fragmentId={fragmentId}
+              ></SelectInvestigator>
             );
           }
         }
@@ -208,7 +215,8 @@ function HandleGenerateForms({
                 changeValue={changeValue}
                 tooltip={tooltip}
                 level={level}
-              ></SelectSingleList>,
+                fragmentId={fragmentId}
+              ></SelectSingleList>
             );
           }
         }

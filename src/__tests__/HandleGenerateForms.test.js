@@ -37,7 +37,6 @@ let shemaObject = {
       "form_label@fr_FR": "Coûts liés au stockage et à la sauvegarde des données",
       "form_label@en_GB": "Data storage and backup associated costs",
     },
-
     funding: {
       type: "array",
       "table_header@fr_FR": "Financeur : identifiant du financement",
@@ -60,7 +59,6 @@ let shemaObject = {
       "form_label@fr_FR": "Indiquer les sources de financement du projet",
       "form_label@en_GB": "Indicate the funding of the project",
     },
-
     backupPolicy: {
       type: "array",
       table_header: null,
@@ -81,7 +79,6 @@ let shemaObject = {
       "form_label@fr_FR": "Politique de sauvegarde",
       "form_label@en_GB": "Backup policy",
     },
-
     principalInvestigator: {
       type: "object",
       class: "Contributor",
@@ -123,7 +120,6 @@ let shemaObject = {
       "form_label@fr_FR": "Responsables du stockage des données",
       "form_label@en_GB": "Persons in charge of storage",
     },
-
     volumeUnit: {
       type: "string",
       description: "Unité de volume",
@@ -135,7 +131,6 @@ let shemaObject = {
       "form_label@fr_FR": "Unité",
       "form_label@en_GB": "Unit",
     },
-
     description: {
       type: "string",
       description: "Description des besoins de stockage",
@@ -145,7 +140,6 @@ let shemaObject = {
       "form_label@fr_FR": "Décrire les besoins de stockage",
       "form_label@en_GB": "Describe storage needs",
     },
-
     facility: {
       type: "array",
       table_header: null,
@@ -169,7 +163,6 @@ let shemaObject = {
       "form_label@fr_FR": "Equipements, plateaux techniques utilisés pour le stockage et sauvegarde des données",
       "form_label@en_GB": "Equipments, technical platforms used for data storage and backup",
     },
-
     storageType: {
       type: "array",
       items: {
@@ -222,6 +215,7 @@ describe("HandleGenerateForms component", () => {
     expect(screen.getByText("Coûts liés au stockage et à la sauvegarde des données")).toBeInTheDocument();
     expect(screen.getByText("Indiquer les sources de financement du projet")).toBeInTheDocument();
     expect(screen.getByText("Politique de sauvegarde")).toBeInTheDocument();
+
     //principalInvestigator (select investigator)
     expect(wrapper.find("SelectInvestigator").prop("label")).toBe("Coordinateur du projet");
     expect(wrapper.find("SelectInvestigator").prop("name")).toBe("principalInvestigator");

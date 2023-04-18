@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
 
 // si type = string et inputtype = dropdown
@@ -65,12 +64,5 @@ function DynamicForm({ fragmentId, dmpId, locale = 'en_GB' }) {
     </>
   );
 }
-
-DynamicForm.propTypes = {
-  fragmentId: PropTypes.number,
-  dmpId: PropTypes.number,
-  schemaId: PropTypes.number,
-  locale: PropTypes.string,
-};
 
 export default DynamicForm;

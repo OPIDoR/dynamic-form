@@ -5,15 +5,16 @@ import BuilderForm from '../Builder/BuilderForm.jsx';
 import { parsePattern } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import { getContributors, getSchema } from '../../services/DmpServiceApi';
+import styles from '../assets/css/form.module.css';
 
 function SelectInvestigator({
   label,
-  name,
+  propName,
   changeValue,
   templateId,
-  keyValue,
   level,
   tooltip,
+  fragmentId,
 }) {
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
@@ -47,14 +48,14 @@ function SelectInvestigator({
       setrole(resTemplate.properties.role[`const@${locale}`]);
       getSchema(subTemplateId).then((resSubTemplate) => {
         setTemplate(resSubTemplate.data);
-        if (!formData[keyValue]) {
+        if (!formData?.[fragmentId]?.[propName]) {
           return;
         }
-        const patern = resSubTemplate.data.to_string;
-        if (!patern.length) {
+        const pattern = resSubTemplate.data.to_string;
+        if (!pattern.length) {
           return;
         }
-        setselectedValue(parsePattern(formData[keyValue].person, patern));
+        setselectedValue(parsePattern(formData?.[fragmentId]?.[propName].person, pattern));
       });
     });
   }, [templateId]);
@@ -64,27 +65,27 @@ function SelectInvestigator({
    */
   const handleClose = () => {
     setShow(false);
-    setSubData(null);
+    settemp(null);
     setindex(null);
   };
+
   /**
-   * The function takes a boolean value as an argument and sets
-   * the state of the show variable to the value of the argument.
-   * @param isOpen - boolean
+   * The function `handleShow` sets the state of `show` to true and prevents the default behavior of an event.
    */
-  const handleShow = (isOpen) => {
-    setShow(isOpen);
+  const handleShow = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setShow(true);
   };
 
   const handleChangeList = (e) => {
-    const patern = template.to_string;
+    const pattern = template.to_string;
     const { object, value } = options[e.target.value];
     setselectedValue(options[e.target.value].value);
-    if (patern.length > 0) {
-      changeValue({ target: { name, value: [object] } });
-      setFormData({ ...formData, [keyValue]: { person: object, role } });
+    if (pattern.length > 0) {
+      setFormData(updateFormState(formData, fragmentId, propName, { person: object, role: role }));
     } else {
-      changeValue({ target: { name, value } });
+      changeValue({ target: { propName, value } });
     }
   };
 
@@ -95,11 +96,9 @@ function SelectInvestigator({
    * If the index is null, then just save the item.
    */
   const handleAddToList = () => {
-    // edit
     if (index !== null) {
-      // const objectPerson = { person: subData, role: "from create" };
-      setFormData({ ...formData, [keyValue]: { person: subData, role } });
-      setselectedValue(parsePattern(subData, template.to_string));
+      setFormData(updateFormState(formData, fragmentId, propName, { person: temp, role: role }));
+      setselectedValue(parsePatern(subData, template.to_string));
     } else {
       // save new
       handleSave();
@@ -116,18 +115,19 @@ function SelectInvestigator({
    * the modal and set the temporary person object to null.
    */
   const handleSave = () => {
-    // const objectPerson = { person: subData, role: "from create" };
-    setFormData({ ...formData, [keyValue]: { person: subData, role } });
+    setFormData(updateFormState(formData, fragmentId, propName, { person: temp, role: role }));
     handleClose();
     setSubData(null);
     setselectedValue(parsePattern(subData, template.to_string));
   };
   /**
-   * It sets the state of the subData variable to the value of the form[keyValue][idx] variable.
+   * It sets the state of the subData variable to the value of the form[propName][idx] variable.
    * @param idx - the index of the item in the array
    */
   const handleEdit = (idx) => {
-    setSubData(formData[keyValue].person);
+    e.stopPropagation();
+    e.preventDefault();
+    setSubData(formData?.[fragmentId]?.[propName]["person"]);
     setShow(true);
     setindex(idx);
   };
@@ -135,26 +135,24 @@ function SelectInvestigator({
   return (
     <>
       <div className="form-group">
-        <label>{label}</label>
-        {tooltip && (
-          <span
-            className="m-4"
-            data-toggle="tooltip"
-            data-placement="top"
-            title={tooltip}
-          >
-            ?
-          </span>
-        )}
+        <div className={styles.label_form}>
+          <strong className={styles.dot_label}></strong>
+          <label>{label}</label>
+          {tooltip && (
+            <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
+              ?
+            </span>
+          )}
+        </div>
+
+        <div className={styles.input_label}>Sélectionnez une valeur de la liste.</div>
         <div className="row">
-          <div className="col-md-10">
+          <div className={`col-md-11 ${styles.select_wrapper}`}>
             {options && (
-              <select className="form-control" onChange={handleChangeList}>
-                <option>
-                  Sélectionnez une valeur de la liste ou saisissez une nouvelle.
-                </option>
+              <select id="company" className="form-control" onChange={handleChangeList}>
+                <option></option>
                 {options.map((o, idx) => (
-                  <option key={idx} value={o.value}>
+                  <option key={o.value} value={idx}>
                     {o.label}
                   </option>
                 ))}
@@ -162,25 +160,20 @@ function SelectInvestigator({
               </select>
             )}
           </div>
-          <div className="col-md-2" style={{ marginTop: '8px' }}>
+          <div className="col-md-1" style={{ marginTop: "8px" }}>
             <span>
-              <a
-                className="text-primary"
-                href="#"
-                aria-hidden="true"
-                onClick={handleShow}
-              >
+              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
                 <i className="fas fa-plus-square" />
               </a>
             </span>
           </div>
         </div>
         {selectedValue && (
-          <div style={{ margin: '10px' }}>
-            <strong>Valeur sélectionnée :</strong> {selectedValue}
-            <a href="#" onClick={() => handleEdit(0)}>
-              {' '}
-              (modifié)
+          <div style={{ margin: "10px" }}>
+            <span className={styles.input_label}>Valeur sélectionnée :</span>
+            <span className={styles.input_text}>{selectedValue}</span>
+            <a href="#" onClick={(e) => handleEdit(e, 0)}>
+              <i className="fas fa-plus-square" />
             </a>
           </div>
         )}

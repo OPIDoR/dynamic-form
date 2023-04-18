@@ -36,11 +36,11 @@ let shemaObject = {
 describe("HandleGenerateForms component", () => {
   it("should render input elements correctly", () => {
     const level = 1;
-    const locale = "fr_FR";
+    const lng = "fr";
     const changeValue = jest.fn();
     const wrapper = mount(
       <Global>
-        <HandleGenerateForms shemaObject={shemaObject} level={level} locale={locale} changeValue={changeValue} />
+        <HandleGenerateForms shemaObject={shemaObject} level={level} lng={lng} changeValue={changeValue} />
       </Global>
     );
     expect(wrapper.find("InputTextDynamicaly").prop("label")).toBe("Mots clés (texte libre)");
